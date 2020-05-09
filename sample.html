@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Sample</title>
+        <!--jquery-->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <!--bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <!--Vue-->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <!--scriptタグはbody要素内にでもかけるが、head要素内に書くほうがベター-->
+        <script>
+        $(function() { // Vueは、body要素が読み込まれたあとではないと正常に動作しない。なので、JQueryのfunction()（$(document).ready()）と同様）を使って、ドキュメントが読み込まれた後に実行するようにする。
+            var app = new Vue({
+                el: '#app', // HTML内のid=app要素を探す。
+                data: { // データを定義する。
+                    // todo: '',  // 変数名: 内容
+                    // isdone: false
+                    todoText: '',
+                    todos: [ // Listも定義できる
+                        {text: 'Vue.jsを学ぶ', isdone: true},
+                        {text: 'Vue.jsでアプリケーションを作る', isdone: false}
+                    ]
+                },
+                methods: {
+                    addTodo: function () { // todoを追加するメソッド。
+                        var newTodo = this.todoText.trim();
+                        if(!newTodo) {return;}
+                        this.todos.push({text: newTodo, done:false});
+                        this.todoText = '';
+                    },
+                    archive: function () {
+                        this.todos = this.todos.filter(n => !n.isdone);
+                    },
+                    removeTodo: function (todo) {
+                        var index = this.todos.indexOf(todo);
+                        this.todos.splice(index, 1);
+                    }
+                },
+                // Point6: computed:算出プロパティ。
+                // methods: メソッドプロパティでも代用できるが、違いとして、computedは使っているdataプロパティに変化がない場合は、再計算をしないため早い。
+                // https://jp.vuejs.org/v2/guide/computed.html#%E7%AE%97%E5%87%BA%E3%83%97%E3%83%AD%E3%83%91%E3%83%86%E3%82%A3-vs-%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89
+                computed: {
+                    remaining: function() { // 未完了タスク件数の算出
+                        return this.todos.filter(n => !n.isdone).length;
+                    }
+                }
+            });
+        })
+        </script>
+        <style>
+            .done {
+                text-decoration: line-through;
+                color: gray;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="app" class="container">
+            <h2>Todo</h2>
+            <p>
+                全{{todos.length}}件中{{remaining}}件
+                <button v-on:click="archive()" class="btn btn-danger bun-xs">断捨離</button>
+            </p>
+            <ul class="list-unstyled">
+                <li v-for="todo in todos"> <!-- Point4: v-for="変数 in 配列" と書くと、繰り返しで要素生成ができる。-->
+                    <label>
+                        <input type="checkbox" v-model="todo.isdone">
+                        <!-- Point1: {{変数名}}でバインディング -->
+                        <!-- Point3: v-bind:class="'stylename': Vuedata" で、class自体を有効にするかどうかのバインディグができる。-->
+                        <span v-bind:class="{'done': todo.isdone}">{{todo.text}}</span>
+                        <button v-on:click="removeTodo(todo)" class="btn btn-warning btn-xs">削除</button>
+                    </label>
+                </li>
+            </ul>
+            <p>
+                <input type="text" v-model="todoText" placeholder="add new todo here"> <!-- Point2: v-modelプロパティで双方向バインディング -->
+                <button v-on:click="addTodo()" class="btn btn-primary btn-sm">追加</button> <!-- Point5: v-on:click="methods名"ディレクティブでイベントを定義できる-->
+            </p>
+        </div>
+    </body>
+</html>
