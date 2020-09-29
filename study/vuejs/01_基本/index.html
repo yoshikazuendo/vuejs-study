@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Vueのelオプションで指定されている要素。Vueの影響を受ける要素となる-->
+    <span>{{message}}</span>
+    <a v-bind:href="googleUrl">Go to Google site</a>
+    <a :href="googleUrl">Go to G Site</a>
+    <p>
+      <span v-if="isCoffee">Coffee!</span>
+      <span v-if="!isCoffee">No Coffee!</span>
+    </p>
+    <ul>
+      <li v-for="food in foods" :key="food.id">{{food.name}}</li>
+    </ul>
+    <p>
+      <button v-on:click="counter += 1">Add 1</button>
+      <button @click="counter -= 1">Sub 1</button>
+      <button @click="add(2)">Add 2</button>
+      <button @click="sub(3)">Sub 3</button>
+    </p>
+    <p>The button above has been clicked {{ counter }} times.</p>
+
+    <input v-model="fullName" placeholder="edit me">
+    <p>My Name: {{ fullName }}</p>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>

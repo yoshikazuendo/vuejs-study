@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width.initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Vue Todo</title>
+</head>
+
+<body>
+  <div id="app" class="container">
+    <h1>{{appName}}</h1>
+
+    <input type="text" v-model="newTodoTitle" placeholder="add Todo..." v-on:keyup.enter="addTodo(newTodoTitle)">
+
+    <div v-for="todo in filteredTodos">
+      <!-- v-bind属性。:classで省略可能。 -->
+      <label v-bind:class="{done: todo.isDone}"><input type="checkbox" v-model="todo.isDone" v-on:change="saveTodoToStorage">{{todo.title}}</label>
+    </div>
+
+    <a href="#" v-on:click="changeFilter('All')">All</a> |
+    <a href="#" v-on:click="changeFilter('Working')">Working</a> |
+    <a href="#" v-on:click="changeFilter('Completed')">Completed</a>
+    <button v-on:click="deleteCompletedTodo">完了済みを削除</button>
+  </div>
+
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Daily Reporter</title>
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-app-bar app color="indigo" dark>
+        <v-toolbar-title>デイリーレポーター</v-toolbar-title>
+      </v-app-bar>
+
+      <v-main>
+        <v-container>
+          <h2>レポート入力</h2>
+        </v-container>
+        <v-container style="max-height: 530px;" class="overflow-y-auto">
+          <h3>打合せ</h3>
+          <draggable :options="draggableOptions" v-model="meetings">
+            <v-row style="height: 47px;" dense v-for="meeting in meetings" :key="meeting.id">
+              <v-col cols="9">
+                <v-text-field v-model="meeting.contents" label="打合せ名称/内容" outlined dense></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-text-field v-model="meeting.hours" label="時間" suffix="h" outlined dense></v-text-field>
+              </v-col>
+              <v-col cols="1">
+                <v-btn @click="deleteMeeting(meeting.id)" class="mx-2" fab dark x-small color="red">
+                  <v-icon dark>mdi-delete</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </draggable>
+          <v-btn @click="addMeeting" class="mx-2" fab dark x-small color="indigo">
+            <v-icon dark>mdi-pen-plus</v-icon>
+          </v-btn>
+          <v-divider></v-divider>
+          <h3>作業</h3>
+          <draggable v-model="works">
+            <v-row style="height: 47px;" dense v-for="work in works" :key="work.id">
+              <v-col cols="7">
+                <v-text-field v-model="work.contents" label="作業名称/内容" outlined dense></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-text-field v-model="work.hours" label="時間" suffix="h" outlined dense></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-autocomplete v-model="work.status" :items="status" label="ステータス" outlined dense></v-autocomplete>
+              </v-col>
+              <v-col cols="1">
+                <v-btn @click="deleteWork(work.id)" class="mx-2" fab dark x-small color="red">
+                  <v-icon dark>mdi-delete</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </draggable>
+          <v-btn @click="addWork" class="mx-2" fab dark x-small color="indigo">
+            <v-icon dark>mdi-pen-plus</v-icon>
+          </v-btn>
+          <v-divider></v-divider>
+          <h3>その他</h3>
+          <draggable v-model="others">
+            <v-row style="height: 47px;" dense v-for="other in others" :key="other.id">
+              <v-col cols="11">
+                <v-text-field v-model="other.contents" label="その他名称/内容" outlined dense></v-text-field>
+              </v-col>
+              <v-col cols="1">
+                <v-btn @click="deleteOther(other.id)" class="mx-2" fab dark x-small color="red">
+                  <v-icon dark>mdi-delete</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </draggable>
+          <v-btn @click="addOther" class="mx-2" fab dark x-small color="indigo">
+            <v-icon dark>mdi-pen-plus</v-icon>
+          </v-btn>
+          <v-divider></v-divider>
+        </v-container>
+        <v-container>
+          <h2>プレビュー</h2>
+          <v-row>
+            <v-col cols="6">
+              <v-card>
+                <v-img class="white--text" height="150px" src="./images/Teams.jpg"></v-img>
+                <v-card-text class="preview">{{teamsContents}}</v-card-text>
+                <v-card-actions>
+                  <v-btn v-clipboard:copy="teamsContents" v-clipboard:success="onTeamsContentsCopy"
+                    v-clipboard:error="onTeamsContentsCopyError" class="mx-2" dark color="indigo">
+                    copy
+                    <v-icon dark>mdi-paperclip</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+            <v-col cols="6">
+              <v-card>
+                <v-img class="white--text" height="150px" src="./images/Excel.png"></v-img>
+                <v-card-text class="preview">{{excelContents}}</v-card-text>
+                <v-card-actions>
+                  <v-btn v-clipboard:copy="excelContents" v-clipboard:success="onExcelContentsCopy"
+                    v-clipboard:error="onExcelContentsCopyError" class="mx-2" dark color="indigo">
+                    copy
+                    <v-icon dark>mdi-paperclip</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-snackbar v-model="snackbar" color="success" timeout=3000>
+            {{message}}
+            <v-btn dark text @click="snackbar = false">Close</v-btn>
+          </v-snackbar>
+        </v-container>
+      </v-main>
+
+      <v-footer color="indigo" app>
+        <span class="white--text">&copy; aikazuyendo {{new Date().getFullYear()}}</span>
+      </v-footer>
+    </v-app>
+  </div>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-clipboard2@0.3.1/dist/vue-clipboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.23.2/vuedraggable.umd.min.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+
+</html>

@@ -1,4 +1,5 @@
 {
-    "pasteImage.defaultName": "Y-MM-DD-HH-mm-sss",
-    "pasteImage.path": "${currentFileDir}/images"
+    "pasteImage.defaultName": "x",
+    "pasteImage.path": "${currentFileDir}/images",
+    "editor.tabSize": 2
 }

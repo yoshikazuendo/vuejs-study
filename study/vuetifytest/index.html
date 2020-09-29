@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-navigation-drawer app>ここはv-navigation-drawer</v-navigation-drawer>
+      <v-app-bar app>ここはv-app-bar</v-app-bar>
+
+      <v-main>
+        <v-container>
+          <v-row>
+            <v-col style="background-color: chartreuse;">row:1 col:1</v-col>
+            <v-col style="background-color: cornflowerblue;">row:1 col:2</v-col>
+            <v-col style="background-color: darkcyan;">row:1 col:3</v-col>
+          </v-row>
+          <v-row>
+            <v-col style="background-color: darkorange;">row:2 col:1</v-col>
+            <v-col style="background-color: goldenrod;">row:2 col:2</v-col>
+          </v-row>
+        </v-container>
+        <v-container>
+          <v-row>
+            <v-btn dark color="indigo">ボタン</v-btn>
+            <v-btn class="mx-2" fab dark x-small color="red">
+              <v-icon dark>mdi-delete</v-icon>
+            </v-btn>
+            <v-btn class="mx-2" dark color="indigo">
+              copy
+              <v-icon dark>mdi-paperclip</v-icon>
+            </v-btn>
+          </v-row>
+          <v-row style="width: 300px;">
+            <v-text-field label="テキストフィールド"></v-text-field>
+          </v-row>
+          <v-row style="width: 300px;">
+            <v-text-field solo label="見た目solo"></v-text-field>
+          </v-row>
+          <v-row style="width: 300px;">
+            <v-text-field outlined dense label="見た目outlined"></v-text-field>
+          </v-row>
+
+          <v-row>
+            <v-card class="mx-auto" max-width="400">
+              <v-img class="white--text align-end" height="200px"
+                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                <v-card-title>Top 10 Australian beaches</v-card-title>
+              </v-img>
+              <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>
+              <v-card-text class="text--primary">
+                <div>Whitehaven Beach</div>
+                <div>Whitsunday Island, Whitsunday Islands</div>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="orange" text>Share</v-btn>
+                <v-btn color="orange" text>Explore</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-row>
+        </v-container>
+
+      </v-main>
+
+      <v-footer app>ここはv-footer</v-footer>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    })
+  </script>
+</body>
+
+</html>
