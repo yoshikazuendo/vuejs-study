@@ -89,7 +89,9 @@
           <v-row>
             <v-col cols="6">
               <v-card>
-                <v-img class="white--text" height="150px" src="./images/Teams.jpg"></v-img>
+                <v-img class="white--text" height="200px" src="./images/Teams.jpg">
+                  <v-card-title>for Teams</v-card-title>
+                </v-img>
                 <v-card-text class="preview">{{teamsContents}}</v-card-text>
                 <v-card-actions>
                   <v-btn v-clipboard:copy="teamsContents" v-clipboard:success="onTeamsContentsCopy"
@@ -102,7 +104,9 @@
             </v-col>
             <v-col cols="6">
               <v-card>
-                <v-img class="white--text" height="150px" src="./images/Excel.png"></v-img>
+                <v-img class="white--text" height="200px" src="./images/Excel.png">
+                  <v-card-title>for Excel</v-card-title>
+                </v-img>
                 <v-card-text class="preview">{{excelContents}}</v-card-text>
                 <v-card-actions>
                   <v-btn v-clipboard:copy="excelContents" v-clipboard:success="onExcelContentsCopy"
